@@ -36,7 +36,7 @@ function fetchDataAndPlot() {
                 }
                 if(key=="pressure_hpa"){
                 
-                    pressureData.push(dataPoint);
+                    pressureData.push(dataPoint*100);
                     // console.log( pressureData);
                 }
                 if(key=="temperature"){
@@ -55,14 +55,55 @@ function fetchDataAndPlot() {
         if (chartInstance) {
             chartInstance.destroy(); // Destroy the previous chart instance if it exists
         }
-
-        plotData(timestamps, humidityData, temperatureData, pressureData);
+        plotTemperatureData(timestamps, temperatureData);
+        plotHumidityData(timestamps, humidityData);
+        plotPressureData(timestamps, pressureData);
+        console.log(pressureData);
+        // plotData(timestamps, humidityData, temperatureData, pressureData);
     });
 }
+function plotTemperatureData(timestamps, temperatureData) {
+    var ctx = document.getElementById('temperatureChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: timestamps,
+            datasets: [{
+                label: 'Temperature (°C)',
+                borderColor: 'red',
+                data: temperatureData,
+                fill: false,
+            }]
+        },
+                options: {
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    parser: 'MM/DD/YYYY HH:mm',
+                                    tooltipFormat: 'll HH:mm'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Value'
+                                }
+                            }
+                        }
+                    }
+                });
+        
+}
 
-function plotData(timestamps, humidityData, temperatureData, pressureData) {
-    var ctx = document.getElementById('myChart').getContext('2d');
-    chartInstance = new Chart(ctx, {
+function plotHumidityData(timestamps, humidityData) {
+    var ctx = document.getElementById('humidityChart').getContext('2d');
+    new Chart(ctx, {
         type: 'line',
         data: {
             labels: timestamps,
@@ -71,19 +112,8 @@ function plotData(timestamps, humidityData, temperatureData, pressureData) {
                 borderColor: 'blue',
                 data: humidityData,
                 fill: false,
-            }, {
-                label: 'Temperature (°C)',
-                borderColor: 'red',
-                data: temperatureData,
-                fill: false,
-            }, {
-                label: 'Pressure (hPa) *10',
-                borderColor: 'green',
-                data: pressureData,
-                fill: false,
             }]
-        },
-        options: {
+        },options: {
             scales: {
                 x: {
                     type: 'time',
@@ -106,7 +136,94 @@ function plotData(timestamps, humidityData, temperatureData, pressureData) {
             }
         }
     });
+        
 }
+
+function plotPressureData(timestamps, pressureData) {
+    var ctx = document.getElementById('pressureChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: timestamps,
+            datasets: [{
+                label: 'Pressure (hPa)',
+                borderColor: 'green',
+                data: pressureData,
+                fill: false,
+            }]
+        },options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        parser: 'MM/DD/YYYY HH:mm',
+                        tooltipFormat: 'll HH:mm'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    }
+                }
+            }
+        }
+    });
+       
+}
+
+// function plotData(timestamps, humidityData, temperatureData, pressureData) {
+//     var ctx = document.getElementById('myChart').getContext('2d');
+//     chartInstance = new Chart(ctx, {
+//         type: 'line',
+//         data: {
+//             labels: timestamps,
+//             datasets: [{
+//                 label: 'Humidity (%)',
+//                 borderColor: 'blue',
+//                 data: humidityData,
+//                 fill: false,
+//             }, {
+//                 label: 'Temperature (°C)',
+//                 borderColor: 'red',
+//                 data: temperatureData,
+//                 fill: false,
+//             }, {
+//                 label: 'Pressure (hPa) *10',
+//                 borderColor: 'green',
+//                 data: pressureData,
+//                 fill: false,
+//             }]
+//         },
+//         options: {
+//             scales: {
+//                 x: {
+//                     type: 'time',
+//                     time: {
+//                         parser: 'MM/DD/YYYY HH:mm',
+//                         tooltipFormat: 'll HH:mm'
+//                     },
+//                     title: {
+//                         display: true,
+//                         text: 'Date'
+//                     }
+//                 },
+//                 y: {
+//                     beginAtZero: true,
+//                     title: {
+//                         display: true,
+//                         text: 'Value'
+//                     }
+//                 }
+//             }
+//         }
+//     });
+// }
 
 // Call fetchDataAndPlot when the window loads
 window.onload = function() {
