@@ -224,7 +224,9 @@ function plotPressureData(timestamps, pressureData) {
 //                     }
 //                 },
 //                 y: {
-//                     beginAtZero: true,
+//                     beginAtZero: false, 
+                       min: 975, 
+                       max: 1025,
 //                     title: {
 //                         display: true,
 //                         text: 'Value'
