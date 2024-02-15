@@ -229,7 +229,7 @@ function plotPressureData(timestamps, pressureData) {
                        max: 1025,
 //                     title: {
 //                         display: true,
-//                         text: 'Value'
+//                         text: 'Pressure (hPa)'
 //                     }
 //                 }
 //             }
